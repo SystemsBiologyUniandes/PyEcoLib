@@ -42,28 +42,28 @@ errmnsz=[]
 df=data1
 del df['time']
 for m in range(len(df)):
-    szs=df.loc[m, :].values.tolist()
+    szs = df.loc[m, :].values.tolist()
     mean_cntr, var_cntr, std_cntr = bayesest(szs,alpha=0.95)
     mnszarray.append(np.mean(szs))
     errmnsz.append(mean_cntr[1][1]-mean_cntr[0])
     cvszarray.append(np.var(szs)/np.mean(szs)**2)
-    errv=(var_cntr[1][1]-var_cntr[0])/mean_cntr[0]**2+2*(mean_cntr[1][1]-mean_cntr[0])*var_cntr[0]/mean_cntr[0]**3
+    errv = (var_cntr[1][1]-var_cntr[0])/mean_cntr[0]**2+2*(mean_cntr[1][1]-mean_cntr[0])*var_cntr[0]/mean_cntr[0]**3
     errcv2sz.append(errv)
 
 fig, ax = plt.subplots(1,2, figsize=(12,4))
 ax[0].plot(np.array(timearray)/doubling_time,np.array(mnszarray))
-ax[0].fill_between(np.array(timearray)/doubling_time,np.array(mnszarray)-np.array(errmnsz),np.array(mnszarray)+np.array(errmnsz),
-                 alpha=1, edgecolor='#4db8ff', facecolor='#4db8ff',linewidth=0,label="SSA")
+ax[0].fill_between(np.array(timearray)/doubling_time, np.array(mnszarray)-np.array(errmnsz), np.array(mnszarray)+np.array(errmnsz),
+                 alpha = 1, edgecolor='#4db8ff', facecolor='#4db8ff', linewidth=0, label="SSA")
 
 
 ax[1].plot(np.array(timearray)/doubling_time,np.array(cvszarray))
 ax[1].fill_between(np.array(timearray)/doubling_time,np.array(cvszarray)-np.array(errcv2sz),np.array(cvszarray)+np.array(errcv2sz),
                  alpha=1, edgecolor='#4db8ff', facecolor='#4db8ff',linewidth=0)
-ax[0].set_ylabel("$s$ $(\mu m)$",size=20)
-ax[1].set_ylabel("$C_V^2(s)$",size=20)
-ax[0].set_xlabel(r"$t/\tau$",size=20)
-ax[1].set_xlabel(r"$t/\tau$",size=20)
-ax[0].set_ylim([np.min(mnszarray),1.1*np.max(mnszarray)])
+ax[0].set_ylabel("$s$ $(\mu m)$", size=20)
+ax[1].set_ylabel("$C_V^2(s)$", size=20)
+ax[0].set_xlabel(r"$t/\tau$", size=20)
+ax[1].set_xlabel(r"$t/\tau$", size=20)
+ax[0].set_ylim([np.min(mnszarray), 1.1*np.max(mnszarray)])
 ax[1].set_ylim([0,1.1*np.max(cvszarray)])
 for l in [0,1]:
     ax[l].set_xlim([0,7])

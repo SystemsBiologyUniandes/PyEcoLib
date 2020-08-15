@@ -1,13 +1,11 @@
-import platform
-import scipy
+import platform, sys
 import numpy as np
 import math
 from scipy import integrate
 from scipy import optimize as opt
 from scipy.stats import gamma
-from cell import Cell
-from colorama import init, Fore, Back, Style
 
+from .cell import Cell
 
 
 class Simulator:
@@ -23,37 +21,35 @@ class Simulator:
         :param V0array: list
         """
 
-        #self.__title()
+        self.__title()
         self.__check_errors(ncells, gr, sb, steps, CV2div, CV2gr, lamb)
 
-        self.n = ncells # Number of cells to study
-        self.smplt = 0 # Sampling time
-        self.gr = gr # Growth  rate
-        self.total_steps = steps # Division steps
-        self.sb = sb #Initial size
-        self.l = lamb
-        if lamb ==1:
-            self.K = self.total_steps *self.gr/(self.sb)
+        self.n = ncells  # Number of cells to study
+        self.smplt = 0  # Sampling time
+        self.gr = gr  # Growth  rate
+        self.total_steps = steps  # Division steps
+        self.sb = sb  # Initial size
+        self.l = lamb  # Lambda variable
+        if lamb == 1:
+            self.K = self.total_steps * self.gr/self.sb
         else:
             self.K = self.total_steps*self.getk()
         self.CV2div = CV2div
         self.CV2gr = CV2gr
 
+        self.output = ""  # String to export data in dynamic simulation
+        self.output_size = ""  # string to export data in divison strategy
 
+        self.num_steps = 0  # Initial steps
+        self.V = self.sb  # Cell size
+        self.time = 0  # Simulation time
 
-        self.output = "" # string to export data in dynamic simulation
-        self.output_size = "" # string to export data in divison strategy
-
-        self.num_steps = 0 # Initial steps
-        self.V = self.sb # Cell size
-        self.time = 0 # Simulation time
-
-        self.cells = [] # Array of cells
+        self.cells = []  # Array of cells
         if hasattr(V0array, "__len__"):
             self.V0arr = V0array
         else:
             self.V0arr = []
-        self.initialize_cells(V0array=self.V0arr) #Initialize cells
+        self.initialize_cells(V0array=self.V0arr)  # Initialize cells
 
 
     def __title(self):
@@ -110,8 +106,7 @@ class Simulator:
         elif lamb < 0.5 or lamb > 2:
             raise NameError('Lamb must be higher than 0.5 and less than 2')
 
-
-    def newgr(self,CV2):
+    def newgr(self, CV2):
         """
         Give a new growth rate
         :param CV2: float
@@ -121,20 +116,26 @@ class Simulator:
         if CV2 ==0:
             return 1.
         else:
-            return np.random.gamma(shape=1/CV2,scale=CV2)
+            return np.random.gamma(shape=1/CV2, scale=CV2)
 
-    def newdivpar(self,CV2):
+    def newdivpar(self, CV2):
         """
         *
         :param CV2: float
-        :return: None
+        :return: float
         """
+        if CV2 >= 1:
+            raise NameError("The param CV2 in newdivpar method must be less than 1")
+        elif CV2 < 0:
+            raise NameError("The param CV2 in newdivpar has to be greater than 0")
+
         if CV2 ==0:
             return 0.5
         else:
             beta = 0.5*((1/CV2)-1)
             return np.random.beta(a=beta,b=beta)
-    def nextt (self,s0,r,cell):
+
+    def nextt (self, s0, r, cell):
         """
         *
         :param s0: float
@@ -142,13 +143,11 @@ class Simulator:
         :param cell: Cell
         :return: None
         """
-        mu= (self.gr*cell.gr)
-        k= self.K*cell.k
+        mu = (self.gr*cell.gr)
+        k = self.K*cell.k
         return (1/(self.l*mu))*np.log(1-((self.l*mu)/(k*s0**self.l))*np.log(r))
 
-
-
-    def getsb(self,k):
+    def getsb(self, k):
         """
         *
         :param k: float
@@ -156,13 +155,14 @@ class Simulator:
         """
         def root(tt):
             return self.multimean(tt,k)-2*tt
+
         def meansb():
-            return opt.bisect(root,0.00001,100000)
+            return opt.bisect(root, 0.00001, 100000)
         sb = meansb()
         return sb
 
 
-    def multimean(self,s,k):
+    def multimean(self, s, k):
         """
         *
         :param s: float
@@ -170,13 +170,13 @@ class Simulator:
         :return: None
         """
 
-        sb=s
+        sb = s
         def moment(sd):
-            return self.rhomulti(sb,sd,k)*sd
-        v=integrate.quad(moment, sb, np.inf)[0]
+            return self.rhomulti(sb, sd, k)*sd
+        v = integrate.quad(moment, sb, np.inf)[0]
         return v
 
-    def rhomulti(self,sb,sd,k):
+    def rhomulti(self, sb, sd, k):
         """
         *
         :param sb: float
@@ -185,14 +185,14 @@ class Simulator:
         :return: None
         """
 
-        n=self.total_steps
-        lamb=self.l
-        gr=self.gr
-        c=n*k/gr
-        x=c*((sd**lamb-sb**lamb)/lamb)
+        n = self.total_steps
+        lamb = self.l
+        gr = self.gr
+        c = n*k/gr
+        x = c*((sd**lamb-sb**lamb)/lamb)
         return gamma.pdf(x, n)*c*sd**(lamb-1)
 
-    def opti(self,k):
+    def opti(self, k):
         """
         *
         :param k: float
@@ -200,14 +200,14 @@ class Simulator:
         """
 
         return self.getsb(k)-self.sb
+
     def getk(self):
         """
         return k when it cannot be calculate with the equation gr/sb
         :return: float
         """
 
-        return opt.bisect(self.opti,0.001,1.5)
-
+        return opt.bisect(self.opti, 0.001, 1.5)
 
     def initialize_cells(self, V0array):
         """
@@ -236,7 +236,7 @@ class Simulator:
         if self.n>10:
             print("Cells initialized")
 
-    def open_file(self, nameCRM="./dataCRM.csv"):
+    def open_file(self, nameCRM = "./dataCRM.csv"):
         """
         Here open the file to write the .csv outputs
         :param nameCRM: string
@@ -283,14 +283,14 @@ class Simulator:
                 tt = cell.nextt
                 if ((t+tt) <= tmax):
                     cell.num_steps += 1
-                    Vn=cell.V*np.exp(self.gr*cell.gr*tt)
+                    Vn = cell.V*np.exp(self.gr*cell.gr*tt)
                     if cell.num_steps >= cell.total_steps:
                         dp = self.newdivpar(self.CV2div)
                         gr = self.newgr(self.CV2gr)
-                        cell.division(Vn,dp,gr,k=gr)
+                        cell.division(Vn, dp, gr, k=gr)
                     else:
                         cell.change(Vn)
-                    cell.nextt = self.nextt(cell.V,cell.rv,cell)
+                    cell.nextt = self.nextt(cell.V, cell.rv, cell)
                 else:
                     Vn = cell.V*np.exp(self.gr*cell.gr*(tmax-t))
                     cell.change(Vn)
@@ -307,7 +307,7 @@ class Simulator:
         :param nameDSM: string
         :return: None
         """
-        self.initialize_cells(self.V0arr) #Initialize cells
+        self.initialize_cells(self.V0arr)  # Initialize cells
         self.file_size = open(nameDSM, "w")
         self.file_size.write("S_b,S_d,time\n")
         self.smplt = sample_time
@@ -345,7 +345,7 @@ class Simulator:
         :param nameCRM: string
         :return: None
         """
-        self.initialize_cells(self.V0arr) #Initialize cells
+        self.initialize_cells(self.V0arr)  # Initialize cells
         self.open_file(nameCRM = nameCRM)
         self.smplt = sample_time
         self.time = 0
@@ -357,15 +357,15 @@ class Simulator:
             self.time += self.smplt
             self.output = ""
             self.output += str(self.time)+","
-            kk=1
+            kk = 1
             for cell in self.cells:
-                if kk<len(self.cells):
+                if kk < len(self.cells):
                     self.output += str(self.truncate(cell.get_size(), 4))+","
                 else:
                     self.output += str(self.truncate(cell.get_size(), 4))
-                kk+=1
+                kk += 1
             self.output += "\n"
-            cnt +=self.smplt
+            cnt += self.smplt
             if cnt >= tgt:
                 print(str(np.int(100*self.time/tmax))+"%")
                 tgt += (tmax/10)
@@ -398,7 +398,7 @@ class Simulator:
         return v
 
 
-    def SdStat(self,sb):
+    def SdStat(self, sb):
         """
         *
         :param sb: float
@@ -432,7 +432,7 @@ class Simulator:
         mn=np.trapz(rhos*ss,x=ss)
         var=np.trapz(rhos*(ss)**2,x=ss)
         CV2=(var-mn**2)/(mn-sb)**2
-        return mn-sb,CV2
+        return mn-sb, CV2
 
 
     def szdynFSP(self, tmax, CV2sz = 0, nameFSP = "./dataFSP.csv"):
@@ -575,11 +575,13 @@ class Simulator:
             return cells[n].V
         else:
             return self.cells[n].V
+
     def get_ndiv(self, n, cells=[]):
         if len(cells) > 0:
             return cells[n].ndiv
         else:
             return self.cells[n].ndiv
+
     def get_gr(self, n, cells=[]):
         """
         Give the growth rate of a given index cell
