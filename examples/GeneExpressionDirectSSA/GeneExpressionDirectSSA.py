@@ -4,7 +4,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from scipy.stats import bayes_mvs as bayesest
 
-sys.path.insert(0, '../../PyEcoLib')
+sys.path.insert(0, '../../')
 from simulator import Simulator
 
 
@@ -27,7 +27,7 @@ kp = pprom*gr/rprom
 
 pop = np.zeros([ncells, 6])
 
-indexes =  np.int(tmax/sampling_time)
+indexes = np.int(tmax/sampling_time)
 rarray = np.zeros([ncells, indexes])
 parray = np.zeros([ncells, indexes])
 tarray = np.zeros([indexes])

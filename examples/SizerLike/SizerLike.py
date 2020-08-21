@@ -5,14 +5,14 @@ from matplotlib import pyplot as plt
 from scipy.stats import bayes_mvs as bayesest
 import time
 
-sys.path.insert(0, '../../PyEcoLib')
+sys.path.insert(0, '../../')
 from simulator import Simulator
 
 
-mean_size = 3 # micron
-doubling_time = 18 #min
-tmax = 180 #min
-sample_time = 2 #min
+mean_size = 3  # micron
+doubling_time = 18  # min
+tmax = 180  # min
+sample_time = 2  # min
 div_steps = 10
 ncells = 5000
 

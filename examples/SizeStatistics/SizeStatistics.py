@@ -6,35 +6,37 @@ from scipy.stats import bayes_mvs as bayesest
 import os
 import time
 
-sys.path.insert(0, '../../PyEcoLib')
+sys.path.insert(0, '../../')
 from simulator import Simulator
 
-mean_size = 3 # micron
-doubling_time = 18 #min
-tmax = 180 #min
-sample_time = 2 #min
+mean_size = 3  # micron
+doubling_time = 18  # min
+tmax = 180  # min
+sample_time = 2  # min
 div_steps = 10
 ncells = 5000
 
 gr = np.log(2)/doubling_time
 
 if not os.path.exists('./data'):
-    os.makedirs('./data') #data path
+    os.makedirs('./data')  # data path
 if not os.path.exists('./figures'):
-    os.makedirs('./figures') #Figures path
+    os.makedirs('./figures')  # Figures path
 
-sim = Simulator(ncells=ncells, gr = gr, sb=mean_size, steps = div_steps) #Initializing the simulator
+sim = Simulator(ncells=ncells, gr=gr, sb=mean_size, steps=div_steps)  # Initializing the simulator
 
 start = time.time()
-sim.divstrat(tmax = tmax, sample_time = 0.1*doubling_time, nameDSM = "./data/dataDSM.csv") #Obtaining the simulation of Sd vs Sb
+# Obtaining the simulation of Sd vs Sb
+sim.divstrat(tmax=tmax, sample_time=0.1*doubling_time, nameDSM="./data/dataDSM.csv")
 print('It took', np.int(time.time()-start), 'seconds.')
 
 start = time.time()
-sim.szdyn(tmax = tmax, sample_time= 0.1*doubling_time, nameCRM = "./data/dataCRM.csv") #Simulating the size for all the cells
+# Simulating the size for all the cells
+sim.szdyn(tmax=tmax, sample_time=0.1*doubling_time, nameCRM="./data/dataCRM.csv")
 print('It took', np.int(time.time()-start), 'seconds.')
 
 start = time.time()
-sim.szdynFSP(tmax = tmax, nameFSP = "./data/dataFSP.csv") #Obtaining trends using numerical FSP algorithm
+sim.szdynFSP(tmax=tmax, nameFSP="./data/dataFSP.csv")  # Obtaining trends using numerical FSP algorithm
 print('It took', np.int(time.time()-start), 'seconds.')
 
 
@@ -42,22 +44,22 @@ sbar=np.linspace(0.5,1.5,100)*mean_size
 cv2sz=[]
 deltsz=[]
 for i in sbar:
-    sd,cv2=sim.SdStat(i) #Obtaining trends in sd vs Sb using master equation formulation
+    sd,cv2=sim.SdStat(i)  # Obtaining trends in sd vs Sb using master equation formulation
     cv2sz.append(cv2)
     deltsz.append(sd-i)
 
 
-data1=pd.read_csv("./data/dataCRM.csv")
-timearray=data1.time.unique()
+data1 = pd.read_csv("./data/dataCRM.csv")
+timearray = data1.time.unique()
 
-mnszarray=[]
-cvszarray=[]
-errcv2sz=[]
-errmnsz=[]
-df=data1
+mnszarray = []
+cvszarray = []
+errcv2sz = []
+errmnsz = []
+df = data1
 del df['time']
 for m in range(len(df)):
-    szs=df.loc[m, :].values.tolist()
+    szs = df.loc[m, :].values.tolist()
     mean_cntr, var_cntr, std_cntr = bayesest(szs,alpha=0.95)
     mnszarray.append(np.mean(szs))
     errmnsz.append(mean_cntr[1][1]-mean_cntr[0])
