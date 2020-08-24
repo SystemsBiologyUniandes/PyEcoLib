@@ -1,6 +1,6 @@
 # PyEcoLib
 
-![logo](https://raw.githubusercontent.com/Cellsizesimulator/PyEcoLib/master/logo.png)
+![logo](https://raw.githubusercontent.com/SystemsBiologyUniandes/PyEcoLib/master/logo.png)
 
 PyEcoLib (Python Library for E. coli size dynamics estimation) is library to estimate bacterial cell size stochastic dynamics including time-continuous growth process and division events.
 
@@ -187,7 +187,7 @@ You obtain a file with exactly the mean and variance of the sizes. You can also 
 Gathering both results, you should obtain something like this plot:
 
 
-![SizeStatistics](https://raw.githubusercontent.com/Cellsizesimulator/PyEcoLib/master/examples/SizeStatistics/figures/size_statistics.png)
+![SizeStatistics](https://raw.githubusercontent.com/SystemsBiologyUniandes/PyEcoLib/master/examples/SizeStatistics/figures/size_statistics.png)
 
 
 On the other hand, if you are interested not in the size dynamics but in the relationship between the added size and size at birth, you can use
@@ -206,7 +206,7 @@ Added,cv2=Simulation.SdStat(sb)
 you can obtain directly these trends with arbitrary precision. The result of merging the simulated data (dots) and the numeric estimation (lines) should look something like this:
 
 
-![DivStrategy](https://raw.githubusercontent.com/Cellsizesimulator/PyEcoLib/master/examples/SizeStatistics/figures/div_strategy.png)
+![DivStrategy](https://raw.githubusercontent.com/SystemsBiologyUniandes/PyEcoLib/master/examples/SizeStatistics/figures/div_strategy.png)
 
 
 
@@ -238,7 +238,7 @@ This example shows you how to calculate the molecule number and the molecule con
 The following plot shows you how the dynamics of the main statistics of both, RNA and protein look like: 
 
 
-![MergeStatistics](https://raw.githubusercontent.com/Cellsizesimulator/PyEcoLib/master/examples/GeneExpressionDirectSSA/figures/merge_statistics2.png)
+![MergeStatistics](https://raw.githubusercontent.com/SystemsBiologyUniandes/PyEcoLib/master/examples/GeneExpressionDirectSSA/figures/merge_statistics2.png)
 
 
 
@@ -267,7 +267,7 @@ Unfortunately, you cannot obtain the numerical approximation to this trend since
 
 As a result, after a statistical analysis, you should obtain the following figure: 
 
-![SizeStatisticNoisy](https://raw.githubusercontent.com/Cellsizesimulator/PyEcoLib/master/examples/NoisyDiv/figures/size_statisticsnoisy.png)
+![SizeStatisticNoisy](https://raw.githubusercontent.com/SystemsBiologyUniandes/PyEcoLib/master/examples/NoisyDiv/figures/size_statisticsnoisy.png)
 
 
 ### Sizerlike
@@ -304,7 +304,7 @@ Adder,cv2=sim.SdStat(sb)
 ```
 As a result, after some statistical analysis, you should obtain a plot like this:
 
-![DivStrategySizerlike](https://raw.githubusercontent.com/Cellsizesimulator/PyEcoLib/master/examples/SizerLike/figures/div_strategy_sizerlike.png)
+![DivStrategySizerlike](https://raw.githubusercontent.com/SystemsBiologyUniandes/PyEcoLib/master/examples/SizerLike/figures/div_strategy_sizerlike.png)
 
 You can also simulate the size dynamics of a given number of cells using the function
 ```
@@ -322,7 +322,7 @@ That makes a file "./data/dataFSP.csv" showing directly the mean and the varianc
 When you merge these both results, you should obtain a plot like this:
 
 
-![SizeStatisticsSizer](https://raw.githubusercontent.com/Cellsizesimulator/PyEcoLib/master/examples/SizerLike/figures/size_statisticssizer.png)
+![SizeStatisticsSizer](https://raw.githubusercontent.com/SystemsBiologyUniandes/PyEcoLib/master/examples/SizerLike/figures/size_statisticssizer.png)
 
 
 ### AdvancedSizeStatistics
@@ -340,13 +340,13 @@ This example includes the calculations made in the examples:
 
 Exploring different division strategies, you can obtain different patterns in added size vs size at birth and its noise some characteristic values (lab=0.5 timer-like, lamb=1 adder and lamb=2 sizer-like) should seem like this:
 
-![FullDivStrategy](https://raw.githubusercontent.com/Cellsizesimulator/PyEcoLib/master/examples/FullSizeStatistics/figures/full_div_strategy.png)
+![FullDivStrategy](https://raw.githubusercontent.com/SystemsBiologyUniandes/PyEcoLib/master/examples/AdvancedSizeStatistics/figures/full_div_strategy.png)
 
 The comparison on size dynamics including different sources of noise should look like this:
 
-![SizeStatisticsComp](https://raw.githubusercontent.com/Cellsizesimulator/PyEcoLib/master/examples/FullSizeStatistics/figures/size_statistics_comp1.png)
+![SizeStatisticsComp](https://raw.githubusercontent.com/SystemsBiologyUniandes/PyEcoLib/master/examples/AdvancedSizeStatistics/figures/size_statistics_comp1.png)
 
 Combining all together, you can plot the following graph:
 
-![FullSizeStatisticsComparison](https://raw.githubusercontent.com/Cellsizesimulator/PyEcoLib/master/examples/FullSizeStatistics/figures/full_size_statistics_comparison.png)
+![FullSizeStatisticsComparison](https://raw.githubusercontent.com/SystemsBiologyUniandes/PyEcoLib/master/examples/AdvancedSizeStatistics/figures/full_size_statistics_comparison.png)
 
