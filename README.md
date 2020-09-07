@@ -63,41 +63,7 @@ Optional parameters:
 
 ### Implemented functions:
 
-Basic functions:
-
-* ### Initialize cells
-```
-Simulation.initialize_cells(V0array)
-```
-This function initialize cells. If V0array is not given, all cells start with size sb. the length of V0array must be equal to the number of cells in the simulator.
-
-* ### Simulate cells
-```
-Simulation.simulate(tmax)
-```
-After initialize cells, simulation is performed during a time interval with duration tmax>0.
-
-* ### Obtain the time to the next division step
-```
-Simulation.get_next_t(n)
-```
-Returns the time to the next division step for the cell with index n.
-
-* ### Obtain the growth rate of any cell
-```
-Simulation.get_gr(n)
-```
-Returns the growth rate of the cell with index n.
-
-* ### Estimate how any cell will get split
-```
-Simulation.get_dp(n)
-```
-Returns the division parameter (the inverse between the size at division and the size of the new cell) for the cell with index n (0.5 by default).
-
-Advanced functions:
-
-* ### Obtaining the size dynamics for all the cells in the simulation.
+* ### Obtaining the stochastic size dynamics for all the cells in the simulation.
 
 ```
 Simulation.szdyn(tmax, sample_time, nameCRM = "./dataCRM.csv")
@@ -112,8 +78,6 @@ The first row is the time from 0 to tmax, sampled periodically with period sampl
 |1.8	|3.2153	|3.2153	|3.2153|
 |3.6	|3.446	|3.446	|3.446|
 |5.4	|3.6934	|3.6934	|3.6934|
-
-
 
 
 * ### Estimating numerically the trends of cell size dynamics
@@ -156,7 +120,7 @@ Returns an array consisting on the mean added size at division ("Added") and the
 * ### How run an example?
 #### Required libraries to run the examples
 * [numpy](https://numpy.org/)
-*  [matplotlib](https://matplotlib.org/)
+* [matplotlib](https://matplotlib.org/)
 * [pandas](https://pandas.pydata.org/)
 * [scipy](https://www.scipy.org/)
 
@@ -242,6 +206,42 @@ The following plot shows you how the dynamics of the main statistics of both, RN
 
 
 
+
+Other functions
+
+The following functions are the basic function implemented in the examples mentioned above but they are not already optimized for using by an user with no experience. We recomend to use them once you are familiar with the library:
+
+Basic functions:
+
+* ### Initialize cells
+```
+Simulation.initialize_cells(V0array)
+```
+This function initialize cells. If V0array is not given, all cells start with size sb. the length of V0array must be equal to the number of cells in the simulator.
+
+* ### Simulate cells
+```
+Simulation.simulate(tmax)
+```
+After initialize cells, simulation is performed during a time interval with duration tmax>0.
+
+* ### Obtain the time to the next division step
+```
+Simulation.get_next_t(n)
+```
+Returns the time to the next division step for the cell with index n.
+
+* ### Obtain the growth rate of any cell
+```
+Simulation.get_gr(n)
+```
+Returns the growth rate of the cell with index n.
+
+* ### Estimate how any cell will get split
+```
+Simulation.get_dp(n)
+```
+Returns the division parameter (the inverse between the size at division and the size of the new cell) for the cell with index n (0.5 by default).
 
 
 
