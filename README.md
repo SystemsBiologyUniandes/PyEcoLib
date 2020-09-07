@@ -223,7 +223,7 @@ This function initialize cells. If V0array is not given, all cells start with si
 ```
 Simulation.simulate(tmax)
 ```
-After initialize cells, simulation is performed during a time interval with duration tmax>0.
+Before run this function, make sure you have already initialized the cells. Simulation is performed during a time interval with duration tmax>0.
 
 * ### Obtain the time to the next division step
 ```
