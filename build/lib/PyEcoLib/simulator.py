@@ -309,7 +309,7 @@ class Simulator:
         """
         self.initialize_cells(self.V0arr)  # Initialize cells
         self.file_size = open(nameDSM, "w")
-        self.file_size.write("S_b,S_d,time\n")
+        self.file_size.write("S_b,S_d,gr,cycletime,time\n")
         self.smplt = sample_time
         self.time = 0
         self.open_file()
@@ -326,7 +326,8 @@ class Simulator:
             line = ""
             for cell in self.cells:
                 if self.get_ndiv(i) > divarray[cnt2]:
-                    line+=str(self.truncate(cell.Vb, 4))+","+str(self.truncate(cell.Vd, 4))+","+str(self.truncate(self.time, 4))+"\n "
+                    tc=(1/cell.gr)*np.log(cell.Vd/cell.Vb)
+                    line+=str(self.truncate(cell.Vb, 4))+","+str(self.truncate(cell.Vd, 4))+","+str(self.truncate(cell.gr, 4))+","+str(self.truncate(tc, 4))+","+str(self.truncate(self.time, 4))+"\n "
                     divarray[cnt2] = self.get_ndiv(i)
                 cnt2+=1
             self.file_size.write(line)
