@@ -430,7 +430,7 @@ class Simulator:
         sarray=sb*np.exp(mu*tt)
         ds=np.diff(sarray)
         ss=0.5*(sarray[1:] + sarray[:-1])
-        rhos=rhot=np.diff(plim)/ds
+        rhos=np.diff(plim)/ds
         mn=np.trapz(rhos*ss,x=ss)
         var=np.trapz(rhos*(ss)**2,x=ss)
         CV2=(var-mn**2)/(mn-sb)**2
