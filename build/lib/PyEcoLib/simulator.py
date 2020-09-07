@@ -326,8 +326,9 @@ class Simulator:
             line = ""
             for cell in self.cells:
                 if self.get_ndiv(i) > divarray[cnt2]:
-                    tc=(1/cell.gr)*np.log(cell.Vd/cell.Vb)
-                    line+=str(self.truncate(cell.Vb, 4))+","+str(self.truncate(cell.Vd, 4))+","+str(self.truncate(cell.gr, 4))+","+str(self.truncate(tc, 4))+","+str(self.truncate(self.time, 4))+"\n "
+                    mu=self.gr*cell.gr
+                    tc=(1/mu)*np.log(cell.Vd/cell.Vb)
+                    line+=str(self.truncate(cell.Vb, 4))+","+str(self.truncate(cell.Vd, 4))+","+str(self.truncate(mu, 4))+","+str(self.truncate(tc, 4))+","+str(self.truncate(self.time, 4))+"\n "
                     divarray[cnt2] = self.get_ndiv(i)
                 cnt2+=1
             self.file_size.write(line)
