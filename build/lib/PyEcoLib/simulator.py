@@ -5,7 +5,7 @@ from scipy import integrate
 from scipy import optimize as opt
 from scipy.stats import gamma
 
-from models.cell import Cell
+from .cell import Cell
 
 
 class Simulator:
@@ -21,8 +21,7 @@ class Simulator:
         :param V0array: list
         """
 
-        if ncells >= 1000 or (V0array != None and V0array >= 1000):
-            self.__title()
+        self.__title()
         self.__check_errors(ncells, gr, sb, steps, CV2div, CV2gr, lamb)
 
         self.n = ncells  # Number of cells to study
@@ -200,7 +199,7 @@ class Simulator:
         :return: float
         """
 
-        return self.getsb(k) - self.sb
+        return self.getsb(k)-self.sb
 
     def getk(self):
         """
