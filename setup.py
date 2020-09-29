@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="PyEcoLib",
-    version="1.0.1",
+    version="1.0.6",
     author="Cesar Vargas, César Nieto, Sergio Blanco",
     author_email="cavargar@gmail.com, canietoa@gmail.com, sergio.camilo.blanco@gmail.com",
     description="PyEcoLib (Python Library for E. coli size dynamics estimation) is library to estimate bacterial cell size stochastic dynamics including time-continuous growth process and division events.",
