@@ -23,6 +23,23 @@ PyEcoLib uses as libraries:
 * [math](https://docs.python.org/3/library/math.html) 
 * [Platform](https://docs.python.org/2/library/platform.html)
 
+## Installing
+
+You can import PyEcoLib from pip using:
+
+```
+pip install PyEcoLib
+
+```
+From your prompt.
+
+
+If you experience issues quth the current version, try to install a past version of the library:
+
+```
+pip install PyEcoLib==1.0.1
+
+```
 
 ## Get Started
 * ### Object "Cell"
@@ -43,6 +60,9 @@ from PyEcoLib.simulator import Simulator
 simulator = Simulator(ncells, gr, sb, steps, CV2div = 0, CV2gr = 0, lamb=1, V0array=None)
 
 ```
+
+
+
 
 > ### Simulator parameters
 To start a new simulator, the user must define the following parameters:
