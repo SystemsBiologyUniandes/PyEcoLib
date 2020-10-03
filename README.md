@@ -25,7 +25,7 @@ PyEcoLib uses as libraries:
 
 ## Installing
 
-You can import PyEcoLib from pip using:
+You can inatall PyEcoLib from pip using:
 
 ```
 pip install PyEcoLib
