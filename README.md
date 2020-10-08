@@ -42,15 +42,6 @@ pip install PyEcoLib==1.0.1
 ```
 
 ## Get Started
-* ### Object "Cell"
-The object Cell is defined in cell.py. To initialize a Cell it must be defined the following parameters:
-
->*  idx: The cell index.
->*  total_steps:  The number of steps to trigger the division (A typical value is 15).
->*  V0: Size at the beginning of the simulation (A typical value is 1 femptoliter).
->*  gr: Growth rate in this cycle (In optimal growth conditions, a typical value is ln(2)/18 min-1).
->*  divpar: division parameter. This corresponds to the ratio between the size at the end of the cycle and the newborn cell (it is 0.5 by default.)
->*  k: Rate of division steps occurrence (We consider it to have the same value than the growth rate).   
 
 * ### Object "Simulator"
 
@@ -265,6 +256,15 @@ Simulation.get_dp(n)
 Returns the division parameter (the inverse between the size at division and the size of the new cell) for the cell with index n (0.5 by default).
 
 
+* ### Object "Cell"
+The object Cell is defined in cell.py. To initialize a Cell it must be defined the following parameters:
+
+>*  idx: The cell index.
+>*  total_steps:  The number of steps to trigger the division (A typical value is 15).
+>*  V0: Size at the beginning of the simulation (A typical value is 1 femptoliter).
+>*  gr: Growth rate in this cycle (In optimal growth conditions, a typical value is ln(2)/18 min-1).
+>*  divpar: division parameter. This corresponds to the ratio between the size at the end of the cycle and the newborn cell (it is 0.5 by default.)
+>*  k: Rate of division steps occurrence (We consider it to have the same value than the growth rate). 
 
 
 ## Advanced Examples
@@ -351,6 +351,8 @@ When you merge these both results, you should obtain a plot like this:
 ```
 from examples.AdvancedSizeStatistics import AdvancedSizeStatistics
 ```
+  
+
 Let's combine most of the properties of cell-size that can be studied using PyEcoLib!
 
 This example includes the calculations made in the examples:
