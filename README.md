@@ -37,7 +37,7 @@ From your prompt.
 If you experience issues quth the current version, try to install a past version of the library:
 
 ```
-pip install PyEcoLib==1.0.1
+pip install PyEcoLib==1.0.11
 
 ```
 
