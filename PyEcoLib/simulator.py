@@ -5,7 +5,7 @@ from scipy import integrate
 from scipy import optimize as opt
 from scipy.stats import gamma
 
-from models.cell import Cell
+from PyEcoLib.models.cell import Cell
 
 
 class Simulator:

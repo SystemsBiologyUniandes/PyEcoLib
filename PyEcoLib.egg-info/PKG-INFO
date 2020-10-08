@@ -1,9 +1,9 @@
 Metadata-Version: 2.1
 Name: PyEcoLib
-Version: 1.0.6
+Version: 1.0.11
 Summary: PyEcoLib (Python Library for E. coli size dynamics estimation) is library to estimate bacterial cell size stochastic dynamics including time-continuous growth process and division events.
 Home-page: https://github.com/SystemsBiologyUniandes/PyEcoLib
-Author: Cesar Vargas, César Nieto, Sergio Blanco
+Author: Cesar Vargas, César Nieto, Camilo Blanco
 Author-email: cavargar@gmail.com, canietoa@gmail.com, sergio.camilo.blanco@gmail.com
 License: UNKNOWN
 Description: # PyEcoLib
@@ -69,43 +69,9 @@ Description: # PyEcoLib
         >* CV2gr: CV2gr. Squared coefficient of variation of cell-to-cell growth rate (zero by default).  (A typical value is 0.02)
         >* lamb: Parameter of division strategy. ![equation](https://latex.codecogs.com/gif.latex?%5Clambda%3C0%0D%0A). ![equation](https://latex.codecogs.com/gif.latex?%5Clambda%3D1%0D%0A%0D%0A)defines the adder (by default).  ![equation](https://latex.codecogs.com/gif.latex?0%3C%5Clambda%3C1%0D%0A) is timer-like and .  ![equation](https://latex.codecogs.com/gif.latex?1%3C%5Clambda%3C%5Cinfty%0D%0A) is sizer-like. In optimal growth conditions lamb=1 and in slow growing E. coli cells, lamb is close to 1.5. Some other rod-shaped cells show different lamb between 0.5 and 2.
         
-        > ### Implemented functions:
+        ### Implemented functions:
         
-        Basic functions:
-        
-        * ### Initialize cells
-        ```
-        Simulation.initialize_cells(V0array)
-        ```
-        This function initialize cells. If V0array is not given, all cells start with size sb. the length of V0array must be equal to the number of cells in the simulator.
-        
-        * ### Simulate cells
-        ```
-        Simulation.simulate(tmax)
-        ```
-        After initialize cells, simulation is performed during a time interval with duration tmax>0.
-        
-        * ### Obtain the time to the next division step
-        ```
-        Simulation.get_next_t(n)
-        ```
-        Returns the time to the next division step for the cell with index n.
-        
-        * ### Obtain the growth rate of any cell
-        ```
-        Simulation.get_gr(n)
-        ```
-        Returns the growth rate of the cell with index n.
-        
-        * ### Estimate how any cell will get split
-        ```
-        Simulation.get_dp(n)
-        ```
-        Returns the division parameter (the inverse between the size at division and the size of the new cell) for the cell with index n (0.5 by default).
-        
-        Advanced functions:
-        
-        * ### Obtaining the size dynamics for all the cells in the simulation.
+        * ### Obtaining the stochastic size dynamics for all the cells in the simulation.
         
         ```
         Simulation.szdyn(tmax, sample_time, nameCRM = "./dataCRM.csv")
@@ -120,8 +86,6 @@ Description: # PyEcoLib
         |1.8	|3.2153	|3.2153	|3.2153|
         |3.6	|3.446	|3.446	|3.446|
         |5.4	|3.6934	|3.6934	|3.6934|
-        
-        
         
         
         * ### Estimating numerically the trends of cell size dynamics
@@ -164,7 +128,7 @@ Description: # PyEcoLib
         * ### How run an example?
         #### Required libraries to run the examples
         * [numpy](https://numpy.org/)
-        *  [matplotlib](https://matplotlib.org/)
+        * [matplotlib](https://matplotlib.org/)
         * [pandas](https://pandas.pydata.org/)
         * [scipy](https://www.scipy.org/)
         
@@ -250,6 +214,42 @@ Description: # PyEcoLib
         
         
         
+        
+        Other functions
+        
+        The following functions are the basic function implemented in the examples mentioned above but they are not already optimized for using by an user with no experience. We recomend to use them once you are familiar with the library:
+        
+        Basic functions:
+        
+        * ### Initialize cells
+        ```
+        Simulation.initialize_cells(V0array)
+        ```
+        This function initialize cells. If V0array is not given, all cells start with size sb. the length of V0array must be equal to the number of cells in the simulator.
+        
+        * ### Simulate cells
+        ```
+        Simulation.simulate(tmax)
+        ```
+        Before run this function, make sure you have already initialized the cells. Simulation is performed during a time interval with duration tmax>0.
+        
+        * ### Obtain the time to the next division step
+        ```
+        Simulation.get_next_t(n)
+        ```
+        Returns the time to the next division step for the cell with index n.
+        
+        * ### Obtain the growth rate of any cell
+        ```
+        Simulation.get_gr(n)
+        ```
+        Returns the growth rate of the cell with index n.
+        
+        * ### Estimate how any cell will get split
+        ```
+        Simulation.get_dp(n)
+        ```
+        Returns the division parameter (the inverse between the size at division and the size of the new cell) for the cell with index n (0.5 by default).
         
         
         
