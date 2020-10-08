@@ -1,4 +1,4 @@
-/build/*
-/data/*
-/PyEcoLib.egg-info/*
-.idea/*
+/build/
+/data/
+/PyEcoLib.egg-info/
+.idea/
