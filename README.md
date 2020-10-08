@@ -23,6 +23,23 @@ PyEcoLib uses as libraries:
 * [math](https://docs.python.org/3/library/math.html) 
 * [Platform](https://docs.python.org/2/library/platform.html)
 
+## Installing
+
+You can inatall PyEcoLib from pip using:
+
+```
+pip install PyEcoLib
+
+```
+From your prompt.
+
+
+If you experience issues quth the current version, try to install a past version of the library:
+
+```
+pip install PyEcoLib==1.0.1
+
+```
 
 ## Get Started
 * ### Object "Cell"
@@ -43,6 +60,9 @@ from PyEcoLib.simulator import Simulator
 simulator = Simulator(ncells, gr, sb, steps, CV2div = 0, CV2gr = 0, lamb=1, V0array=None)
 
 ```
+
+
+
 
 > ### Simulator parameters
 To start a new simulator, the user must define the following parameters:
@@ -100,14 +120,15 @@ Estimate numerically the dynamics of the mean and variance of the size distribut
 ```
 Simulation.divstrat(tmax, sample_time, nameDSM = "./dataDSM.csv")
 ```
-This function runs a simulation similar to szdyn producing a file with default name "./dataDSM.csv" the first row is the size at birth, the second row is the size at division and the third column corresponds to the time when division occurs
+This function runs a simulation similar to szdyn producing a file with default name "./dataDSM.csv" the first row is the size at birth, the second row is the size at division and the third column corresponds to the growth rate of that cycle, the fourth column is the time spent during that cycle and the fifth column is the average time when that cycle occurs.
 
-
-|S_b	|S_d	|time|
-|-----|-----|-----|
-|2.8486	|6.0399	|37.8|
-|1.5	|7.0832	|37.8|
-|3.5025|6.2172	|37.8|
+|S_b|	S_d	|gr|	cycletime|	time|
+|-----|-----|-----|-----|-----|
+|0.5000|	1.9107|	0.0385|	34.8151|	25.2|
+|0.5000	|2.0160|	0.0385	|36.2070	|25.2|
+|	0.5000|	2.1328|	0.0385	|37.6706|	25.2|
+|0.5000	|1.5283	|0.0385	|29.0162|	25.2|
+|0.5000	|2.0442	|0.0385	|36.5679|	25.2|
 
 * ### Estimating numerically the division strategy
 ```
