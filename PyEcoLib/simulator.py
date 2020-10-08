@@ -5,7 +5,7 @@ from scipy import integrate
 from scipy import optimize as opt
 from scipy.stats import gamma
 
-from models.cell import Cell
+from PyEcoLib.models.cell import Cell
 
 
 class Simulator:
@@ -21,7 +21,8 @@ class Simulator:
         :param V0array: list
         """
 
-        self.__title()
+        if ncells >= 1000 or (V0array != None and V0array >= 1000):
+            self.__title()
         self.__check_errors(ncells, gr, sb, steps, CV2div, CV2gr, lamb)
 
         self.n = ncells  # Number of cells to study
@@ -199,7 +200,7 @@ class Simulator:
         :return: float
         """
 
-        return self.getsb(k)-self.sb
+        return self.getsb(k) - self.sb
 
     def getk(self):
         """
@@ -309,7 +310,7 @@ class Simulator:
         """
         self.initialize_cells(self.V0arr)  # Initialize cells
         self.file_size = open(nameDSM, "w")
-        self.file_size.write("S_b,S_d,time\n")
+        self.file_size.write("S_b,S_d,gr,cycletime,time\n")
         self.smplt = sample_time
         self.time = 0
         self.open_file()
@@ -326,7 +327,9 @@ class Simulator:
             line = ""
             for cell in self.cells:
                 if self.get_ndiv(i) > divarray[cnt2]:
-                    line+=str(self.truncate(cell.Vb, 4))+","+str(self.truncate(cell.Vd, 4))+","+str(self.truncate(self.time, 4))+"\n "
+                    mu=self.gr*cell.gr
+                    tc=(1/mu)*np.log(cell.Vd/cell.Vb)
+                    line+=str(self.truncate(cell.Vb, 4))+","+str(self.truncate(cell.Vd, 4))+","+str(self.truncate(mu, 4))+","+str(self.truncate(tc, 4))+","+str(self.truncate(self.time, 4))+"\n "
                     divarray[cnt2] = self.get_ndiv(i)
                 cnt2+=1
             self.file_size.write(line)
@@ -428,7 +431,7 @@ class Simulator:
         sarray=sb*np.exp(mu*tt)
         ds=np.diff(sarray)
         ss=0.5*(sarray[1:] + sarray[:-1])
-        rhos=rhot=np.diff(plim)/ds
+        rhos=np.diff(plim)/ds
         mn=np.trapz(rhos*ss,x=ss)
         var=np.trapz(rhos*(ss)**2,x=ss)
         CV2=(var-mn**2)/(mn-sb)**2
