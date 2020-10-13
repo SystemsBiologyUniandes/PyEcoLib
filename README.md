@@ -25,7 +25,7 @@ PyEcoLib uses as libraries:
 
 ## Installing
 
-You can inatall PyEcoLib from pip using:
+You can install PyEcoLib from pip using:
 
 ```
 pip install PyEcoLib
@@ -33,13 +33,6 @@ pip install PyEcoLib
 ```
 From your prompt.
 
-
-If you experience issues quth the current version, try to install a past version of the library:
-
-```
-pip install PyEcoLib==1.0.11
-
-```
 
 ## Get Started
 
@@ -51,10 +44,6 @@ from PyEcoLib.simulator import Simulator
 simulator = Simulator(ncells, gr, sb, steps, CV2div = 0, CV2gr = 0, lamb=1, V0array=None)
 
 ```
-
-
-
-
 > ### Simulator parameters
 To start a new simulator, the user must define the following parameters:
 
@@ -199,14 +188,14 @@ Together with the reaction times that you simulation calculates, with PyEcoLib, 
 ```
 Simulation.get_next_t(n)
 ```
+Returns the remaing time to the next division step for the cell with index n. 
 
 Before division, you can estimate the division parameter, this is, how small will be the descendant cell regarding the size at division of the current cell. 
 
 ```
 Simulation.get_dp(n)
 ```
-
-This division parameter is centered at 0.5 and has a stochastic variability quantified by its coefficient of variation "CV2div" (by default is zero) which is set once the user defines the simulator.
+Returning the division parameter of the cell with index n. This division parameter is centered at 0.5 and has a stochastic variability quantified by its coefficient of variation "CV2div" (by default is zero) which is set once the user defines the simulator.
 Hence, during division, molecules can segregate following a binomial distribution with parameter equal to this division parameter.
 
 This example shows you how to calculate the molecule number and the molecule concentrations for many cells.  
@@ -255,6 +244,11 @@ Simulation.get_dp(n)
 ```
 Returns the division parameter (the inverse between the size at division and the size of the new cell) for the cell with index n (0.5 by default).
 
+* ### Estimate the splitting rate constant
+```
+Simulation.getk()
+```
+Returns the division splitting constant obtained such ash the mean size at birth will be the specified by the user. 
 
 * ### Object "Cell"
 The object Cell is defined in cell.py. To initialize a Cell it must be defined the following parameters:
