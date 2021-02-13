@@ -6,7 +6,7 @@ import unittest
 import numpy as np
 
 sys.path.insert(0, '../')
-import simulator
+from PyEcoLib import simulator
 
 
 class TestSimulator(unittest.TestCase):
@@ -21,6 +21,7 @@ class TestSimulator(unittest.TestCase):
     def test_newgr(self):
         self.set_variables()
         self.assertEqual(self.sim.newgr(0), 1)
+
         for i in range(1, 6):
             self.assertNotEqual(self.sim.newgr(i), 1)
         for i in np.arange(0.1, 1, 0.1):

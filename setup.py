@@ -22,10 +22,11 @@ def add_datafiles(data_files, dest_dir, pattern):
             data_files.append((root_dest_path, files))
     do_directory(dest_dir, src_dir, elements)
 
+
 setuptools.setup(
     name="PyEcoLib",
-    version="1.1.0",
-    author="Cesar Vargas, César Nieto, Sergio Blanco",
+    version="1.0.11",
+    author="Cesar Vargas, César Nieto, Camilo Blanco",
     author_email="cavargar@gmail.com, canietoa@gmail.com, sergio.camilo.blanco@gmail.com",
     description="PyEcoLib (Python Library for E. coli size dynamics estimation) is library to estimate bacterial cell size stochastic dynamics including time-continuous growth process and division events.",
     long_description=long_description,

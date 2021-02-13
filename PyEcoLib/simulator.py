@@ -8,6 +8,7 @@ from scipy.stats import gamma
 from cell import Cell
 
 
+
 class Simulator:
     def __init__(self, ncells, gr, sb, steps, CV2div = 0, CV2gr = 0, lamb=1, V0array=None):
         """
