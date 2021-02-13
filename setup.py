@@ -23,7 +23,6 @@ def add_datafiles(data_files, dest_dir, pattern):
     do_directory(dest_dir, src_dir, elements)
 
 
-
 setuptools.setup(
     name="PyEcoLib",
     version="1.0.11",
