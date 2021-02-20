@@ -1,8 +1,16 @@
 # PyEcoLib
 
+<<<<<<< HEAD
+=======
+[![DOI](https://zenodo.org/badge/287546723.svg)](https://zenodo.org/badge/latestdoi/287546723)
+
+>>>>>>> master
 ![logo](https://raw.githubusercontent.com/SystemsBiologyUniandes/PyEcoLib/master/logo.png)
 
 PyEcoLib (Python Library for E. coli size dynamics estimation) is library to estimate bacterial cell size stochastic dynamics including time-continuous growth process and division events.
+
+Read [the article](https://www.biorxiv.org/content/10.1101/2020.09.29.319152v1.full.pdf+html) presenting the library.
+Read [the article](https://www.biorxiv.org/content/10.1101/2020.09.29.319251v1) with the theory behind the simulator.
 
 Some of the basic uses PyEcoLyb:
 * Estimating stochastic division times of E. coli bacteria with arbitrary precision from measurable parameters like growth rate, mean cell size and number of division steps. These times can be coupled to any stochastic simulation algorithm for gene expression.
@@ -23,17 +31,18 @@ PyEcoLib uses as libraries:
 * [math](https://docs.python.org/3/library/math.html) 
 * [Platform](https://docs.python.org/2/library/platform.html)
 
+## Installing
+
+You can install PyEcoLib from pip using:
+
+```
+pip install PyEcoLib
+
+```
+From your prompt.
+
 
 ## Get Started
-* ### Object "Cell"
-The object Cell is defined in cell.py. To initialize a Cell it must be defined the following parameters:
-
->*  idx: The cell index.
->*  total_steps:  The number of steps to trigger the division (A typical value is 15).
->*  V0: Size at the beginning of the simulation (A typical value is 1 femptoliter).
->*  gr: Growth rate in this cycle (In optimal growth conditions, a typical value is ln(2)/18 min-1).
->*  divpar: division parameter. This corresponds to the ratio between the size at the end of the cycle and the newborn cell (it is 0.5 by default.)
->*  k: Rate of division steps occurrence (We consider it to have the same value than the growth rate).   
 
 * ### Object "Simulator"
 
@@ -43,7 +52,6 @@ from PyEcoLib.simulator import Simulator
 simulator = Simulator(ncells, gr, sb, steps, CV2div = 0, CV2gr = 0, lamb=1, V0array=None)
 
 ```
-
 > ### Simulator parameters
 To start a new simulator, the user must define the following parameters:
 
@@ -100,14 +108,15 @@ Estimate numerically the dynamics of the mean and variance of the size distribut
 ```
 Simulation.divstrat(tmax, sample_time, nameDSM = "./dataDSM.csv")
 ```
-This function runs a simulation similar to szdyn producing a file with default name "./dataDSM.csv" the first row is the size at birth, the second row is the size at division and the third column corresponds to the time when division occurs
+This function runs a simulation similar to szdyn producing a file with default name "./dataDSM.csv" the first row is the size at birth, the second row is the size at division and the third column corresponds to the growth rate of that cycle, the fourth column is the time spent during that cycle and the fifth column is the average time when that cycle occurs.
 
-
-|S_b	|S_d	|time|
-|-----|-----|-----|
-|2.8486	|6.0399	|37.8|
-|1.5	|7.0832	|37.8|
-|3.5025|6.2172	|37.8|
+|S_b|	S_d	|gr|	cycletime|	time|
+|-----|-----|-----|-----|-----|
+|0.5000|	1.9107|	0.0385|	34.8151|	25.2|
+|0.5000	|2.0160|	0.0385	|36.2070	|25.2|
+|	0.5000|	2.1328|	0.0385	|37.6706|	25.2|
+|0.5000	|1.5283	|0.0385	|29.0162|	25.2|
+|0.5000	|2.0442	|0.0385	|36.5679|	25.2|
 
 * ### Estimating numerically the division strategy
 ```
@@ -187,14 +196,14 @@ Together with the reaction times that you simulation calculates, with PyEcoLib, 
 ```
 Simulation.get_next_t(n)
 ```
+Returns the remaing time to the next division step for the cell with index n. 
 
 Before division, you can estimate the division parameter, this is, how small will be the descendant cell regarding the size at division of the current cell. 
 
 ```
 Simulation.get_dp(n)
 ```
-
-This division parameter is centered at 0.5 and has a stochastic variability quantified by its coefficient of variation "CV2div" (by default is zero) which is set once the user defines the simulator.
+Returning the division parameter of the cell with index n. This division parameter is centered at 0.5 and has a stochastic variability quantified by its coefficient of variation "CV2div" (by default is zero) which is set once the user defines the simulator.
 Hence, during division, molecules can segregate following a binomial distribution with parameter equal to this division parameter.
 
 This example shows you how to calculate the molecule number and the molecule concentrations for many cells.  
@@ -208,6 +217,7 @@ The following plot shows you how the dynamics of the main statistics of both, RN
 
 
 Other functions
+<<<<<<< HEAD
 
 The following functions are the basic function implemented in the examples mentioned above but they are not already optimized for using by an user with no experience. We recomend to use them once you are familiar with the library:
 
@@ -243,7 +253,58 @@ Simulation.get_dp(n)
 ```
 Returns the division parameter (the inverse between the size at division and the size of the new cell) for the cell with index n (0.5 by default).
 
+=======
+>>>>>>> master
 
+The following functions are the basic function implemented in the examples mentioned above but they are not already optimized for using by an user with no experience. We recomend to use them once you are familiar with the library:
+
+Basic functions:
+
+* ### Initialize cells
+```
+Simulation.initialize_cells(V0array)
+```
+This function initialize cells. If V0array is not given, all cells start with size sb. the length of V0array must be equal to the number of cells in the simulator.
+
+* ### Simulate cells
+```
+Simulation.simulate(tmax)
+```
+Before run this function, make sure you have already initialized the cells. Simulation is performed during a time interval with duration tmax>0.
+
+* ### Obtain the time to the next division step
+```
+Simulation.get_next_t(n)
+```
+Returns the time to the next division step for the cell with index n.
+
+* ### Obtain the growth rate of any cell
+```
+Simulation.get_gr(n)
+```
+Returns the growth rate of the cell with index n.
+
+* ### Estimate how any cell will get split
+```
+Simulation.get_dp(n)
+```
+Returns the division parameter (the inverse between the size at division and the size of the new cell) for the cell with index n (0.5 by default).
+
+* ### Estimate the splitting rate constant
+```
+Simulation.getk()
+```
+Returns the division splitting constant obtained such ash the mean size at birth will be the specified by the user. 
+
+* ### Object "Cell"
+The object Cell is defined in cell.py. To initialize a Cell it must be defined the following parameters:
+
+>*  idx: The cell index.
+>*  total_steps:  The number of steps to trigger the division (A typical value is 15).
+>*  V0: Size at the beginning of the simulation (A typical value is 1 femptoliter).
+>*  gr: Growth rate in this cycle (In optimal growth conditions, a typical value is ln(2)/18 min-1).
+>*  divpar: division parameter. This corresponds to the ratio between the size at the end of the cycle and the newborn cell (it is 0.5 by default.)
+>*  k: Rate of division steps occurrence (We consider it to have the same value than the growth rate). 
 
 
 ## Advanced Examples
@@ -330,6 +391,8 @@ When you merge these both results, you should obtain a plot like this:
 ```
 from examples.AdvancedSizeStatistics import AdvancedSizeStatistics
 ```
+  
+
 Let's combine most of the properties of cell-size that can be studied using PyEcoLib!
 
 This example includes the calculations made in the examples:
