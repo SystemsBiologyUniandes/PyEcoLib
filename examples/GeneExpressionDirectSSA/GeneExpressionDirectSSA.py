@@ -4,8 +4,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from scipy.stats import bayes_mvs as bayesest
 
-sys.path.insert(0, '../../')
-from simulator import Simulator
+from PyEcoLib.simulator import Simulator
 
 
 mean_size = 3

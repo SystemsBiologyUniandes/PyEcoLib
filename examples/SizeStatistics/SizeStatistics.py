@@ -6,8 +6,7 @@ from scipy.stats import bayes_mvs as bayesest
 import os
 import time
 
-sys.path.insert(0, '../../')
-from simulator import Simulator
+from PyEcoLib.simulator import Simulator
 
 mean_size = 3  # micron
 doubling_time = 18  # min
