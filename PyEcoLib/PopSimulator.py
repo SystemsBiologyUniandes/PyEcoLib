@@ -7,7 +7,7 @@ from scipy import optimize as opt
 from scipy.stats import gamma
 from colorama import init, Fore, Back, Style
 
-from cell import Cell
+from PyEcoLib.models.cell import Cell
 
 class PopSimulator:
     def __init__(self, ncells, gr, sb, steps, CV2div = 0, CV2gr = 0, lamb=1, V0array=None, nu=1):
@@ -224,7 +224,7 @@ class PopSimulator:
                 self.cells.append(cell)
 
     def open_file(self, FileName="./DataSz.csv",DivEventsFile=None):
-        
+
         """
         Here open the file to write the .csv outputs
         :param nameCRM: string
@@ -261,10 +261,10 @@ class PopSimulator:
         mu= (self.gr*cell.gr)
         k= self.K*cell.k
         l=self.l
-        return (1/(l*mu))*np.log(1-(l*mu*np.log(r)/(k*s0**l))) 
+        return (1/(l*mu))*np.log(1-(l*mu*np.log(r)/(k*s0**l)))
 
     def simulate(self,tmax):
-        
+
         """
         This function do all operations
         :param tmax: int
@@ -385,7 +385,7 @@ class PopSimulator:
 
 
     def divstrat(self, tmax, sample_time, nameDSM = "./dataDSM.csv"):
-        
+
         """
         *
         :param tmax: int
@@ -423,9 +423,9 @@ class PopSimulator:
                 if cnt >= tgt:
                     print(str(np.int(100*self.time/tmax))+"%")
                     cnt = 0
-    
+
             self.file_size.close()
-    
+
     def du(self,u,sb,t,dt):
         """
         *
@@ -619,10 +619,10 @@ class PopSimulator:
             for m in range(len(fullmeansz)):
                 output += str(fulltime[m])+","+str(fullmeansz[m])+","+str(fullvarsz[m])+"\n"
             file.write(output)
-  
-    
-    
-    
+
+
+
+
     def get_sz(self, n, cells=[]):
         """
         Give the size of a cell
