@@ -11,13 +11,16 @@ def add_datafiles(data_files, dest_dir, pattern):
     def do_directory(root_dest_path, root_src_path, elements):
         files = []
         for e in elements:
+
             if isinstance(e, list):
                 src_dir, elems = e
                 dest_path = '/'.join([root_dest_path, src_dir])
                 src_path = os.path.join(root_src_path, src_dir)
                 do_directory(dest_path, src_path, elems)
+                print("Path: "+dest_path +" / "+ src_path + " / "+elems)
             else:
                 files.extend(glob.glob(os.path.join(root_src_path, e)))
+                print("Path: "+root_src_path+" / "+ e )
         if files:
             data_files.append((root_dest_path, files))
     do_directory(dest_dir, src_dir, elements)
@@ -25,14 +28,14 @@ def add_datafiles(data_files, dest_dir, pattern):
 
 setuptools.setup(
     name="PyEcoLib",
-    version="2.0.1",
+    version="2.0.3",
     author="Cesar Vargas, César Nieto, Camilo Blanco",
     author_email="cavargar@gmail.com, canietoa@gmail.com, sergio.camilo.blanco@gmail.com",
     description="PyEcoLib (Python Library for E. coli size dynamics estimation) is library to estimate bacterial cell size stochastic dynamics including time-continuous growth process and division events.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/SystemsBiologyUniandes/PyEcoLib",
-    packages=setuptools.find_packages(),
+    packages=['PyEcoLib',  'PyEcoLib/models'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
@@ -43,6 +46,6 @@ setuptools.setup(
 pyecolib_data_files = []
 data_files = [('PyEcoLib', pyecolib_data_files)]
 add_datafiles(data_files, 'PyEcoLib/PyEcoLib',
-              ['PyEcoLib', ['*']])
+              ['PyEcoLib', ['simulator.py']])
 add_datafiles(data_files, 'PyEcoLib/examples',
               ['examples', ['*']])
