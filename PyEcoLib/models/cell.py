@@ -28,9 +28,9 @@ class Cell:
         self.gr = gr
         self.k = k
         self.Vb = self.Vd*self.dp
-        self.Vd = Vn
-        self.dp = dp
         self.V = Vn*self.dp
+        self.Vd = Vn
+        self.dp = dp        
         self.rv = np.random.rand()
         self.ndiv += 1
         self.num_steps = 0
