@@ -1,11 +1,15 @@
 # PyEcoLib
 
+<<<<<<< HEAD
+=======
 [![DOI](https://zenodo.org/badge/287546723.svg)](https://zenodo.org/badge/latestdoi/287546723)
 
+>>>>>>> master
 ![logo](https://raw.githubusercontent.com/SystemsBiologyUniandes/PyEcoLib/master/logo.png)
 
 PyEcoLib (Python Library for E. coli size dynamics estimation) is library to estimate bacterial cell size stochastic dynamics including time-continuous growth process and division events.
 
+Read [the article](https://www.biorxiv.org/content/10.1101/2020.09.29.319152v1.full.pdf+html) presenting the library.
 Read [the article](https://www.biorxiv.org/content/10.1101/2020.09.29.319251v1) with the theory behind the simulator.
 
 Some of the basic uses PyEcoLyb:
@@ -213,6 +217,44 @@ The following plot shows you how the dynamics of the main statistics of both, RN
 
 
 Other functions
+<<<<<<< HEAD
+
+The following functions are the basic function implemented in the examples mentioned above but they are not already optimized for using by an user with no experience. We recomend to use them once you are familiar with the library:
+
+Basic functions:
+
+* ### Initialize cells
+```
+Simulation.initialize_cells(V0array)
+```
+This function initialize cells. If V0array is not given, all cells start with size sb. the length of V0array must be equal to the number of cells in the simulator.
+
+* ### Simulate cells
+```
+Simulation.simulate(tmax)
+```
+Before run this function, make sure you have already initialized the cells. Simulation is performed during a time interval with duration tmax>0.
+
+* ### Obtain the time to the next division step
+```
+Simulation.get_next_t(n)
+```
+Returns the time to the next division step for the cell with index n.
+
+* ### Obtain the growth rate of any cell
+```
+Simulation.get_gr(n)
+```
+Returns the growth rate of the cell with index n.
+
+* ### Estimate how any cell will get split
+```
+Simulation.get_dp(n)
+```
+Returns the division parameter (the inverse between the size at division and the size of the new cell) for the cell with index n (0.5 by default).
+
+=======
+>>>>>>> master
 
 The following functions are the basic function implemented in the examples mentioned above but they are not already optimized for using by an user with no experience. We recomend to use them once you are familiar with the library:
 

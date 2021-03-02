@@ -384,8 +384,8 @@ class PopSimulator:
             self.DivFile.close()
 
 
-    def divstrat(self, tmax, sample_time, nameDSM = "./dataDSM.csv"):
-
+    def divstrat(self, tmax, nameDSM = "./dataDSM.csv"):
+        
         """
         *
         :param tmax: int
@@ -396,10 +396,10 @@ class PopSimulator:
         if self.nu==2:
             raise NameError('This function was designed for nu==1.')
         else:
-            self.initialize_cells(self.V0arr) #Initialize cells
+            self.initialize_cells(self.V0arr)  # Initialize cells
             self.file_size = open(nameDSM, "w")
-            self.file_size.write("S_b,S_d,time\n")
-            self.smplt = sample_time
+            self.file_size.write("S_b,S_d,gr,cycletime,time\n")
+            self.smplt = 0.01*tmax
             self.time = 0
             self.open_file()
             self.time = 0
@@ -407,16 +407,23 @@ class PopSimulator:
             tgt = (tmax/10)
             cnt = 0
             for i in range(len(self.cells)):
-                divarray = np.concatenate((divarray,[self.get_ndiv(i)]),axis=0)
+                divarray = np.concatenate((divarray,[0]),axis=0)
+        
             while self.time<tmax:
+                grarray = np.array([])
+                for cell in self.cells:
+                    grarray = np.concatenate((grarray,[cell.gr]),axis=0)
                 self.simulate(self.smplt)
                 cnt2 = 0
                 self.time += self.smplt
                 line = ""
                 for cell in self.cells:
-                    if self.get_ndiv(i) > divarray[cnt2]:
-                        line+=str(self.truncate(cell.Vb, 4))+","+str(self.truncate(cell.Vd, 4))+","+str(self.truncate(self.time, 4))+"\n "
-                        divarray[cnt2] = self.get_ndiv(i)
+                    if cell.ndiv>divarray[cnt2]:
+                        mu=self.gr*grarray[cnt2]
+                        tc=(1/mu)*np.log(cell.Vd/cell.Vb)
+                        if self.time>0.3*tmax:
+                            line+=str(self.truncate(cell.Vb, 4))+","+str(self.truncate(cell.Vd, 4))+","+str(self.truncate(mu, 4))+","+str(self.truncate(tc, 4))+","+str(self.truncate(self.time, 4))+"\n "
+                        divarray[cnt2] = cell.ndiv
                     cnt2+=1
                 self.file_size.write(line)
                 cnt +=self.smplt
@@ -509,6 +516,8 @@ class PopSimulator:
             tmax=tmax
             ndivs=int(1.5*tmax*self.gr/np.log(2))
             dt=0.0001*np.log(2)/self.gr
+            numsteps=int(np.floor(tmax/sample_time))+1
+            
             if CV2sz==0:
                 s0arr=[self.V]
             else:
@@ -518,21 +527,19 @@ class PopSimulator:
                 wgs=[]
                 for l in s0arr:
                     wgs.append((gamma.cdf(l+dx/2,a=1/CV2sz,scale=self.V*CV2sz)-gamma.cdf(l-dx/2,a=1/CV2sz,scale=self.V*CV2sz))/dx)
-
-            allp=np.zeros([ndivs,len(s0arr),1000])
-            obj=0
+    
+            allp=np.zeros([ndivs,len(s0arr),numsteps])
             countv0=0
             for v0 in s0arr:
-                if obj%3==2:
-                    print(str(np.int(100*obj/30))+"%")
-                obj+=1
+                if 100*countv0/len(s0arr)%10==0:
+                    print(str(np.round(100*countv0/len(s0arr),1))+"%")
                 t=0
+                tref=0
                 steps=int(np.floor(tmax/dt))
                 u=np.zeros([ndivs,nsteps])#(DIVS,STEPS)
                 u[0]=np.zeros(nsteps)
                 u[0][0]=1#P_00
                 time=[]#time array
-                count=int(np.floor(tmax/(dt*1000)))-1
                 count2=0
                 for l in range(steps):
                     utemp=u
@@ -557,22 +564,22 @@ class PopSimulator:
                                 dun=k*v0**lamb*np.exp(arg)*(utemp[n][m-1]-utemp[n][m])
                                 u[n][m]+=dun*dt
                     t+=dt
-                    count=count+1
-                    if count==int(np.floor(tmax/(dt*1000))):
+                    if t>=tref:
                         time.append(t)
                         mean=0
                         for ii in range(len(allp)):
                             allp[ii][countv0][count2]=np.sum(u[ii])
-                            count=0
-                    count2+=1
+                        tref+=sample_time
+    
+                        count2+=1
                 countv0=countv0+1
             if CV2sz==0:
                 fullmeansz=[]
                 fullvarsz=[]
                 fulltime=[]
                 t=0
-                dt=tmax/1000
-                for ll in range(len(allp[0][0])):
+                Deltat=sample_time
+                for ll in range(count2):
                     ms=0
                     for ctv0 in range(len(s0arr)):
                         tempms=0
@@ -590,14 +597,14 @@ class PopSimulator:
                         mvar+=tempms
                     fullvarsz.append(mvar)
                     fulltime.append(t)
-                    t+=dt
+                    t+=Deltat
             else:
                 fullmeansz=[]
                 fullvarsz=[]
                 fulltime=[]
                 t=0
-                dt=tmax/1000
-                for ll in range(len(allp[0][0])):
+                Deltat=sample_time
+                for ll in range(count2):
                     ms=0
                     for ctv0 in range(len(s0arr)):
                         tempms=0
@@ -615,14 +622,11 @@ class PopSimulator:
                         mvar+=tempms*wgs[ctv0]*dx
                     fullvarsz.append(mvar)
                     fulltime.append(t)
-                    t+=dt
+                    t+=Deltat
             for m in range(len(fullmeansz)):
                 output += str(fulltime[m])+","+str(fullmeansz[m])+","+str(fullvarsz[m])+"\n"
             file.write(output)
-
-
-
-
+      
     def get_sz(self, n, cells=[]):
         """
         Give the size of a cell
