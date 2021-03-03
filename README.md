@@ -70,12 +70,6 @@ Optional parameters:
 
 
 
-![image](https://user-images.githubusercontent.com/18561977/109749454-afdab400-7ba8-11eb-853f-6f2d64c8ba02.png)
-
-
-![image](https://user-images.githubusercontent.com/18561977/109748777-70f82e80-7ba7-11eb-8662-4c427775aa3e.png)
-
-
 ### Implemented functions:
 
 
@@ -243,7 +237,6 @@ The following plot shows you how the dynamics of the main statistics of both, RN
 
 
 Other functions
-<<<<<<< HEAD
 
 The following functions are the basic function implemented in the examples mentioned above but they are not already optimized for using by an user with no experience. We recomend to use them once you are familiar with the library:
 
@@ -279,8 +272,7 @@ Simulation.get_dp(n)
 ```
 Returns the division parameter (the inverse between the size at division and the size of the new cell) for the cell with index n (0.5 by default).
 
-=======
->>>>>>> master
+
 
 The following functions are the basic function implemented in the examples mentioned above but they are not already optimized for using by an user with no experience. We recomend to use them once you are familiar with the library:
 
@@ -333,9 +325,9 @@ The object Cell is defined in cell.py. To initialize a Cell it must be defined t
 >*  k: Rate of division steps occurrence (We consider it to have the same value than the growth rate). 
 
 
-#Version 2.0.3
+## Version 2.0.3
 
-In this version, we implemented a new class: PopSimulator. This 
+In this version, we implemented a new class: PopSimulator.
 
 ```
 from PyEcoLib.PopSimulator import PopSimulator
@@ -345,7 +337,7 @@ With the same parameters used in the class Simulator plus the parameter nu.
 
 With nu=1, PopSimulator corresponds to a similar class to Simulator. With nu=2, all the offspring is tracked. 
 
-PopSimulator was developed ail to silate populations and its main function is szdyn. 
+PopSimulator was developed to simulate populations and its main function is szdyn. 
 
 ```
 PopSimulation.szdyn(tmax, sample_time, FileName, DivEventsFile)
@@ -355,23 +347,31 @@ We recomend to simulatte the population for a time tmax<7doublingtime such as th
 PopSimulator generates two files: Filename where the function exports the size dynamics simulated for different cells, it looks like this:
 
 |Time	|Sample	|Cell	|Size|	DivSteps|
+|-----|-----|-----|-----|-----|
 |0	|0	|0	|1	|0|
 |0	|1	|1	|1	|0|
 |0	|2	|2	|1	|0|
 |0 |3	|3	|1	|0|
+
+
 where the file shows the time, the sampling ID, the cell ID, the cell-size and the division steps of these bacteria along the time.
 
 
 DivEventsFile, on the other hand, shows the times of the division a growing population of bacteria defiig te path to this file using "DivEventsFile" :
 
 |Sample|	Cell|	Mother|	MotherSize|	BirthTime|	Sb|	GrowthRate|	DivPar|
-|0	|0|	0|	1.23|	0|	1|	0.03850818	0.5|
+|-----|-----|-----|-----|-----|-----|-----|-----|
+|0	|0|	0|	1.23|	0|	1|	0.03850818|	0.5|
 |1	|1|	1| 1.4	|0|	1	|0.03850818|	0.5|
 |2	|2|	2	|1.62	|0	|1|	0.03850818|	0.5|
 
+
+Showing the ID of population, the ID of the cell, which is the ID of its mother and the size of its mother before the division, the time instant when that bacteria got born its size at birth, it growth rate and the division parameter (it size of onne of its daugther cell over the size at division) .
+
+
 We provided an example of how to use the PopSimulator to estimate the gene expression in a growing population. you can find these examples in "PopSimulator" folder. In the subfolder "SingleStep" you can find the gene expression example for a division process triggered by a stochastic process of one division step and in the folder "TenSteps" you can find the same example but with division with ten steps.
 
-An example
+An example of how the population along the time for many starting samples and different division steps, is presented as follows:
 
 ![population](https://raw.githubusercontent.com/SystemsBiologyUniandes/PyEcoLib/master/examples/PopSimulator/GeneExpression/SingleStep/figures/population.png)
 ## Advanced Examples
