@@ -1,10 +1,9 @@
 # PyEcoLib
 
-<<<<<<< HEAD
+
 =======
 [![DOI](https://zenodo.org/badge/287546723.svg)](https://zenodo.org/badge/latestdoi/287546723)
 
->>>>>>> master
 ![logo](https://raw.githubusercontent.com/SystemsBiologyUniandes/PyEcoLib/master/logo.png)
 
 PyEcoLib (Python Library for E. coli size dynamics estimation) is library to estimate bacterial cell size stochastic dynamics including time-continuous growth process and division events.
@@ -69,7 +68,46 @@ Optional parameters:
 >* CV2gr: CV2gr. Squared coefficient of variation of cell-to-cell growth rate (zero by default).  (A typical value is 0.02)
 >* lamb: Parameter of division strategy. ![equation](https://latex.codecogs.com/gif.latex?%5Clambda%3C0%0D%0A). ![equation](https://latex.codecogs.com/gif.latex?%5Clambda%3D1%0D%0A%0D%0A)defines the adder (by default).  ![equation](https://latex.codecogs.com/gif.latex?0%3C%5Clambda%3C1%0D%0A) is timer-like and .  ![equation](https://latex.codecogs.com/gif.latex?1%3C%5Clambda%3C%5Cinfty%0D%0A) is sizer-like. In optimal growth conditions lamb=1 and in slow growing E. coli cells, lamb is close to 1.5. Some other rod-shaped cells show different lamb between 0.5 and 2.
 
+
+
+Version 2.0.3
+
+In this version, we implemented a new class: PopSimulator. This 
+
+```
+from PyEcoLib.PopSimulator import PopSimulator
+sim = PopSimulator(ncells, gr, sb, steps, nu=2) 
+```
+With the same parameters used in the class Simulator plus the parameter nu.
+
+With nu=1, PopSimulator corresponds to a similar class to Simulator. The main difference between these classes is the function szdyn. 
+
+
+```
+PopSimulation.szdyn(tmax, sample_time, FileName, DivEventsFile)
+```
+In the case of PopSimulator, it can generate two files: Filename where the function exports the size dynamics simulated for different cells, it looks like this:
+
+|Time	|Sample	|Cell	|Size|	DivSteps|
+|0	|0	|0	|1	|0|
+|0	|1	|1	|1	|0|
+|0	|2	|2	|1	|0|
+|0 |3	|3	|1	|0|
+where the file shows the time, the sampling ID, the cell ID, the cell-size and the division steps of these bacteria along the time.
+DivEventsFile, on the other hand, shows the times of the division a growing population of bacteria:
+
+|Sample|	Cell|	Mother|	MotherSize|	BirthTime|	Sb|	GrowthRate|	DivPar|
+|0	0	0	nan	0	1	0.03850818	0.5
+|1	1	1	nan	0	1	0.03850818	0.5|2	2	2	nan	0	1	0.03850818	0.5
+![image](https://user-images.githubusercontent.com/18561977/109749454-afdab400-7ba8-11eb-853f-6f2d64c8ba02.png)
+
+
+![image](https://user-images.githubusercontent.com/18561977/109748777-70f82e80-7ba7-11eb-8662-4c427775aa3e.png)
+
+
 ### Implemented functions:
+
+
 
 * ### Obtaining the stochastic size dynamics for all the cells in the simulation.
 
@@ -103,6 +141,14 @@ Estimate numerically the dynamics of the mean and variance of the size distribut
 |1.26	|3.149150051|	4.34E-10|
 |1.44	|3.171054121|	1.61E-09|
 
+Changes in version 2.0.3:
+
+We debugged this function. Now, you must to define the sampling time using the parameter "sample_time", as:
+
+```
+Simulation.szdynFSP(tmax, sample_time, CV2sz, nameFSP = "./dataFSP.csv")
+```
+
 * ### Simulating the division strategy 
 
 ```
@@ -117,6 +163,15 @@ This function runs a simulation similar to szdyn producing a file with default n
 |	0.5000|	2.1328|	0.0385	|37.6706|	25.2|
 |0.5000	|1.5283	|0.0385	|29.0162|	25.2|
 |0.5000	|2.0442	|0.0385	|36.5679|	25.2|
+
+Changes in version 2.0.3:
+
+Now, you don't have to define the sampling time, the function has been changed to as:
+
+```
+Simulation.divstrat(tmax, nameDSM = "./dataDSM.csv")
+```
+
 
 * ### Estimating numerically the division strategy
 ```
@@ -412,4 +467,6 @@ The comparison on size dynamics including different sources of noise should look
 Combining all together, you can plot the following graph:
 
 ![FullSizeStatisticsComparison](https://raw.githubusercontent.com/SystemsBiologyUniandes/PyEcoLib/master/examples/AdvancedSizeStatistics/figures/full_size_statistics_comparison.png)
+
+
 
