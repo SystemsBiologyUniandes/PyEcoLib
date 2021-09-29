@@ -46,18 +46,23 @@ From your prompt.
 Simulator is the main object in the library. This object has most of the function that can be used to study cell size dynamics.
 ```
 from PyEcoLib.simulator import Simulator
-simulator = Simulator(ncells, gr, sb, steps, CV2div = 0, CV2gr = 0, lamb=1, V0array=None)
+sim = Simulator(ncells=1000, gr=0.7, sb=1, steps=20, CV2div = 0, CV2gr = 0, lamb=1, V0array=None)
 
 ```
+
+After defining your Simulator object (for us 'sim'), you can use different function implemented to this object.
+
 > ### Simulator parameters
 To start a new simulator, the user must define the following parameters:
 
 Required parameters:
 
 >* ncells: Number of cells to simulate.
->* gr: Growth Rate (log(2)/doubling time).
+>* gr: Growth Rate also known as elongation rate (log(2)/doubling time).
 >* sb: Mean newborn cell Size.
->* steps: Division Steps that trigger the cell splitting.
+>* steps: Division Steps (positive integer number) that trigger the cell splitting (typical is 20). The greater the number of steps, the more deterministic is the division process.
+
+
 
 Optional parameters:
 
@@ -68,58 +73,57 @@ Optional parameters:
 
 
 
+In the example presented above, we considered ncells = 1000, growth rate to be log(2) approx, size at birth sb=1, the division steps steps=20.
 
+As optional parameters, we considered no-noise in splitting (CV2div=0), no noise in growth rate (CVgr=0), an adder division strategy (lamb=1) and no initial array of starting sizes (V0array=None).
 
 ### Implemented functions:
 
 
 
-* ### Obtaining the stochastic size dynamics for all the cells in the simulation.
+* ### szdyn: Obtaining the stochastic size dynamics for all the cells in the simulation.
 
 ```
-Simulation.szdyn(tmax, sample_time, nameCRM = "./dataCRM.csv")
+from PyEcoLib.simulator import Simulator
+sim = Simulator(ncells=1, gr=0.7, sb=1, steps=20)#Defining the object sim
+sim.szdyn(tmax=10, sample_time=0.01, nameCRM = "./dataCRM.csv")
 ```
-Defining a maximum time tmax and a sampling time sample_time with units of inverse growth rate, the function returns a file with default name "./dataCRM.csv". 
+Defining a maximum time tmax (in this case 10) and a sampling time sample_time (in this case 0.01), with units of inverse growth rate, the function returns a file with default name "./dataCRM.csv". 
 
 The first row is the time from 0 to tmax, sampled periodically with period sample_time. Subsequent columns correspond to the size of each cell at those times.
 
 | time      | Cell1          | Cell2  |Cell3  |
 |----------|----------|----------|----------|
 |0|	3|	3|	3|
-|1.8	|3.2153	|3.2153	|3.2153|
-|3.6	|3.446	|3.446	|3.446|
-|5.4	|3.6934	|3.6934	|3.6934|
+|0.01	|3.2153	|3.2153	|3.2153|
+|0.02	|3.446	|3.446	|3.446|
+|0.03	|3.6934	|3.6934	|3.6934|
 
 
-* ### Estimating numerically the trends of cell size dynamics
+* ### szdynFSP: Estimating numerically the trends of cell size dynamics
+
 
 ```
-Simulation.szdynFSP(tmax, CV2sz = 0, nameFSP = "./dataFSP.csv")
+sim.szdynFSP(tmax=10, sample_time=0.01, CV2sz=0, nameFSP = "./dataFSP.csv")
 ```
-Estimate numerically the dynamics of the mean and variance of the size distribution with default name "./dataFSP.csv". The variability in the starting cell size can be set by the parameter CV2sz corresponding to the square coefficient of variation of the size.
+Estimate numerically the dynamics of the mean and variance of the size distribution with default name "./dataFSP.csv". You have to provide the maximim simulation time (tmax) in this example tmax=10, the sampling time (sample_time), in this example being 0.01 telling you how often you are taking measurements.  The variability in the starting cell size can be set by the parameter CV2sz (In this case CV2sz=0) corresponding to the square coefficient of variation of the size. The resulting dataframe corresponds to three rows: The first is the time (taking samples every sample_time), the second is the mean size at that time and the third column corresponds to the Variance of the distribution of sizes at that time. 
 
 
 |time	|Meansize|	VarSize|
 |-----|-----|-----|
-|0.9	|3.105794772|	1.60E-11|
-|1.08	|3.127397282|	9.57E-11|
-|1.26	|3.149150051|	4.34E-10|
-|1.44	|3.171054121|	1.61E-09|
+|0.01	|3.105794772|	1.60E-11|
+|0.02	|3.127397282|	9.57E-11|
+|0.03	|3.149150051|	4.34E-10|
+|0.04	|3.171054121|	1.61E-09|
 
-Changes in version 2.0.3:
 
-We debugged this function. Now, you must to define the sampling time using the parameter "sample_time", as:
 
-```
-Simulation.szdynFSP(tmax, sample_time, CV2sz, nameFSP = "./dataFSP.csv")
-```
-
-* ### Simulating the division strategy 
+* ### divstrat: Simulating the division strategy 
 
 ```
-Simulation.divstrat(tmax, sample_time, nameDSM = "./dataDSM.csv")
+sim.divstrat(tmax=10, nameDSM = "./dataDSM.csv")
 ```
-This function runs a simulation similar to szdyn producing a file with default name "./dataDSM.csv" the first row is the size at birth, the second row is the size at division and the third column corresponds to the growth rate of that cycle, the fourth column is the time spent during that cycle and the fifth column is the average time when that cycle occurs.
+This function runs a simulation similar to szdyn producing a file with default name "./dataDSM.csv". You have to provide the maximum time of simulation (tmax) and the simulatior will simulate and take all the divisions during that time and write the file. The first row is the size at birth, the second row is the size at division and the third column corresponds to the growth rate of that cycle, the fourth column is the time spent during that cycle and the fifth column is the average time when that cycle occurs.
 
 |S_b|	S_d	|gr|	cycletime|	time|
 |-----|-----|-----|-----|-----|
@@ -129,20 +133,12 @@ This function runs a simulation similar to szdyn producing a file with default n
 |0.5000	|1.5283	|0.0385	|29.0162|	25.2|
 |0.5000	|2.0442	|0.0385	|36.5679|	25.2|
 
-Changes in version 2.0.3:
 
-Now, you don't have to define the sampling time, the function has been changed to as:
-
+* ### SdStat: Estimating numerically the division strategy
 ```
-Simulation.divstrat(tmax, nameDSM = "./dataDSM.csv")
+Added,cv2=sim.SdStat(sb=1)
 ```
-
-
-* ### Estimating numerically the division strategy
-```
-Added,cv2=Simulation.SdStat(sb)
-```
-Returns an array consisting on the mean added size at division ("Added") and the squared coefficient of variation of this added size ("cv2"). 
+Using numerical methods, returns an array consisting on the mean added size at division ("Added") and the squared coefficient of variation of this added size ("cv2"). The main parameter of this function is sb corresponding to the size at birth. We recomend use values near to the given sb defined whith the simulator.
 
 ## Examples included in the library
 
@@ -163,14 +159,15 @@ Found in "SizeStatistics" folder, this example shows how to use the library to p
 
 Using
 ```
-Simulation.szdyn(tmax, sample_time, nameCRM = "./dataCRM.csv")
+
+sim.szdyn(tmax, sample_time, nameCRM = "./dataCRM.csv")
 ```
 where you include the time to simulate the cells "tmax" in units of inverse growth rate, the samling time "sample_time" and the name of the output file ("./dataCRM.csv" by default), you can obtain a file that, after some statistical analysis, can be used to estimate the mean size and its coefficient of variation. 
 
 Using
 
 ```
-Simulation.szdynFSP(tmax, CV2sz = 0, nameFSP = "./dataFSP.csv")
+sim.szdynFSP(tmax, sample_time, CV2sz, nameFSP = "./dataFSP.csv")
 ```
 Where you have to set the maximum time to simulate and, optionally, the variability in the initial size distribution "CV2sz" (by default is zero and a typical value is 0.015)
 
@@ -324,27 +321,26 @@ The object Cell is defined in cell.py. To initialize a Cell it must be defined t
 >*  divpar: division parameter. This corresponds to the ratio between the size at the end of the cycle and the newborn cell (it is 0.5 by default.)
 >*  k: Rate of division steps occurrence (We consider it to have the same value than the growth rate). 
 
+* ### Object "PopSimulator"
 
-## Version 2.0.3
-
-In this version, we implemented a new class: PopSimulator.
+Unlike Simulator which keeps the bacterial number constant discarding ont of the descendat cell after division, PopSimulator can simulate the entire population or the Simulator case changing one parameter (nu):
 
 ```
 from PyEcoLib.PopSimulator import PopSimulator
-sim = PopSimulator(ncells, gr, sb, steps, nu=2) 
+sim = PopSimulator(ncells=1, gr=0.7, sb=1, steps=10, nu=2) 
 ```
 With the same parameters used in the class Simulator plus the parameter nu.
 
 With nu=1, PopSimulator corresponds to a similar class to Simulator. With nu=2, all the offspring is tracked. 
 
-PopSimulator was developed to simulate populations and its main function is szdyn. 
+PopSimulator was developed to simulate populations and its main function (in fact its only function) is szdyn. 
 
 ```
-PopSimulation.szdyn(tmax, sample_time, FileName, DivEventsFile)
+sim.szdyn(tmax=5, sample_time=0.01, FileName='./dynamics.csv', DivEventsFile='./divevents.csv')
 ```
 We recomend to simulatte the population for a time tmax<7doublingtime such as the population number is not too high. 
 
-PopSimulator generates two files: Filename where the function exports the size dynamics simulated for different cells, it looks like this:
+PopSimulator generates two files: "Filename" where the function exports the size dynamics simulated for different cells, it looks like this:
 
 |Time	|Sample	|Cell	|Size|	DivSteps|
 |-----|-----|-----|-----|-----|
