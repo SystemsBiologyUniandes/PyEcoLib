@@ -289,7 +289,7 @@ An example of how the population along the time for many starting samples and di
 
 Other functions
 
-The following functions are the basic function implemented in the examples mentioned above but they are not already optimized for using by an user with no experience. We recomend to use them once you are familiar with the library:
+The following functions, implemented for the object Simulato, are the basic functions implemented in the examples mentioned above but they are not already optimized for using by an user with no experience. We recomend to use them once you are familiar with the library:
 
 Basic functions:
 
