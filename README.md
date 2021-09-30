@@ -131,7 +131,7 @@ from PyEcoLib.simulator import Simulator
 sim = Simulator(ncells=1, gr=0.7, sb=1, steps=20)#Defining the object sim
 sim.divstrat(tmax=10, nameDSM = "./dataDSM.csv")
 ```
-This function runs a simulation similar to szdyn producing a file with default name "./dataDSM.csv". You have to provide the maximum time of simulation (tmax) and the simulatior will simulate and take all the divisions during that time and write the file. The first row is the size at birth, the second row is the size at division and the third column corresponds to the growth rate of that cycle, the fourth column is the time spent during that cycle and the fifth column is the average time when that cycle occurs.
+This function runs a simulation similar to szdyn producing a file with default name "./dataDSM.csv". You have to provide the maximum time of simulation (tmax) and the simulatior will simulate and take all the divisions during that time and write the file. The first row is the size at birth (S_b), the second row is the size at division (S_d) and the third column corresponds to the growth rate of that cycle (gr). This value can change from cell to cell if CV2gr is different than zero. The fourth column is the time spent during that cycle (cycletime) and the fifth column is the average time (the average between the time at division and the time at birth) when that cycle occurs (time).
 
 An example of a dataframe can be something like this (the output is stochastic so it can change): 
 
@@ -195,7 +195,9 @@ DivEventsFile, on the other hand, shows the times of the division a growing popu
 |2	|2|	2	|1.62	|0	|1|	0.03850818|	0.5|
 
 
-Showing the ID of population, the ID of the cell, the ID of its mother and the size of its mother before the division, the time instant when that bacteria got born its size at birth, its growth rate and the division parameter (it size of one of its future daugther cells over the size at division) .
+Showing the ID of population (Sample), the ID of the cell (Cell), the ID of its mother (Mother) and the size of its mother before the division (MotherSize), the time instant when that bacteria got born (BirthTime) measured from the starting time instant; its size at birth (Sb), its growth rate (GrowthRate) and the division parameter; DivPar (it size of one of its future daugther cells over the size at division).
+
+Using these data, you can simulate, for instance gene expression knowing exactly when each cell get born, which cell was its mother, what was the size of its mother (if you want to calculate the binomial partition ratio), the cell size at birth and its growth rate if you want to predict the cell size at any time and de DivPar which tells you how assymetic their descendant cells are going to be.
 
 
 
