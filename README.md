@@ -148,7 +148,7 @@ Unlike Simulator which keeps the bacterial number constant discarding ont of the
 from PyEcoLib.PopSimulator import PopSimulator
 sim = PopSimulator(ncells=1, gr=0.7, sb=1, steps=10, nu=2) 
 ```
-With the same parameters used in the class Simulator plus the parameter nu.
+With the same parameters used in the class Simulator (ncells,gr,sb,steps,CV2div,CV2gr,lamb and V0array) plus the parameter nu.
 
 With nu=1, PopSimulator corresponds to a similar class to Simulator. With nu=2, all the offspring is tracked. 
 
