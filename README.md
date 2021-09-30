@@ -172,7 +172,7 @@ PopSimulator generates two files: "Filename" where the function exports the size
 where the file shows the time, the sampling ID, the cell ID, the cell-size and the division steps of these bacteria along the time.
 
 
-DivEventsFile, on the other hand, shows the times of the division a growing population of bacteria defiig te path to this file using "DivEventsFile" :
+DivEventsFile, on the other hand, shows the times of the division a growing population of bacteria. You have to define the path to this file using "DivEventsFile" in szdyn parameters:
 
 |Sample|	Cell|	Mother|	MotherSize|	BirthTime|	Sb|	GrowthRate|	DivPar|
 |-----|-----|-----|-----|-----|-----|-----|-----|
@@ -181,7 +181,7 @@ DivEventsFile, on the other hand, shows the times of the division a growing popu
 |2	|2|	2	|1.62	|0	|1|	0.03850818|	0.5|
 
 
-Showing the ID of population, the ID of the cell, which is the ID of its mother and the size of its mother before the division, the time instant when that bacteria got born its size at birth, it growth rate and the division parameter (it size of onne of its daugther cell over the size at division) .
+Showing the ID of population, the ID of the cell, the ID of its mother and the size of its mother before the division, the time instant when that bacteria got born its size at birth, its growth rate and the division parameter (it size of one of its future daugther cells over the size at division) .
 
 
 
