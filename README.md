@@ -104,9 +104,13 @@ The first row is the time from 0 to tmax, sampled periodically with period sampl
 
 
 ```
+from PyEcoLib.simulator import Simulator
+sim = Simulator(ncells=1, gr=0.7, sb=1, steps=20)#Defining the object sim
 sim.szdynFSP(tmax=10, sample_time=0.01, CV2sz=0, nameFSP = "./dataFSP.csv")
 ```
 Estimate numerically the dynamics of the mean and variance of the size distribution with default name "./dataFSP.csv". You have to provide the maximim simulation time (tmax) in this example tmax=10, the sampling time (sample_time), in this example being 0.01 telling you how often you are taking measurements.  The variability in the starting cell size can be set by the parameter CV2sz (In this case CV2sz=0) corresponding to the square coefficient of variation of the size. The resulting dataframe corresponds to three rows: The first is the time (taking samples every sample_time), the second is the mean size at that time and the third column corresponds to the Variance of the distribution of sizes at that time. 
+
+An example ob the obtained data is something like this:
 
 
 |time	|Meansize|	VarSize|
@@ -121,9 +125,13 @@ Estimate numerically the dynamics of the mean and variance of the size distribut
 * ### divstrat: Simulating the division strategy 
 
 ```
+from PyEcoLib.simulator import Simulator
+sim = Simulator(ncells=1, gr=0.7, sb=1, steps=20)#Defining the object sim
 sim.divstrat(tmax=10, nameDSM = "./dataDSM.csv")
 ```
 This function runs a simulation similar to szdyn producing a file with default name "./dataDSM.csv". You have to provide the maximum time of simulation (tmax) and the simulatior will simulate and take all the divisions during that time and write the file. The first row is the size at birth, the second row is the size at division and the third column corresponds to the growth rate of that cycle, the fourth column is the time spent during that cycle and the fifth column is the average time when that cycle occurs.
+
+An example of a dataframe can be something like this (the output is stochastic so it can change): 
 
 |S_b|	S_d	|gr|	cycletime|	time|
 |-----|-----|-----|-----|-----|
@@ -136,7 +144,9 @@ This function runs a simulation similar to szdyn producing a file with default n
 
 * ### SdStat: Estimating numerically the division strategy
 ```
-Added,cv2=sim.SdStat(sb=1)
+from PyEcoLib.simulator import Simulator
+sim = Simulator(ncells=1, gr=0.7, sb=1, steps=20)#Defining the object sim
+Added,cv2=sim.SdStat(sb=1.0)#returns (1,0.05)
 ```
 Using numerical methods, returns an array consisting on the mean added size at division ("Added") and the squared coefficient of variation of this added size ("cv2"). The main parameter of this function is sb corresponding to the size at birth. We recomend use values near to the given sb defined whith the simulator.
 
@@ -155,6 +165,8 @@ With nu=1, PopSimulator corresponds to a similar class to Simulator. With nu=2, 
 PopSimulator was developed to simulate populations and its main function (in fact its only function) is szdyn. 
 
 ```
+from PyEcoLib.PopSimulator import PopSimulator
+sim = PopSimulator(ncells=1, gr=0.7, sb=1, steps=10, nu=2) 
 sim.szdyn(tmax=5, sample_time=0.01, FileName='./dynamics.csv', DivEventsFile='./divevents.csv')
 ```
 We recomend to simulatte the population for a time tmax<7doublingtime such as the population number is not too high. 
