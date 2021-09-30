@@ -92,6 +92,8 @@ Defining a maximum time tmax (in this case 10) and a sampling time sample_time (
 
 The first row is the time from 0 to tmax, sampled periodically with period sample_time. Subsequent columns correspond to the size of each cell at those times.
 
+An example of a dataset consisting on 3 cells, can be something like this:
+
 | time      | Cell1          | Cell2  |Cell3  |
 |----------|----------|----------|----------|
 |0|	3|	3|	3|
@@ -110,7 +112,7 @@ sim.szdynFSP(tmax=10, sample_time=0.01, CV2sz=0, nameFSP = "./dataFSP.csv")
 ```
 Estimate numerically the dynamics of the mean and variance of the size distribution with default name "./dataFSP.csv". You have to provide the maximim simulation time (tmax) in this example tmax=10, the sampling time (sample_time), in this example being 0.01 telling you how often you are taking measurements.  The variability in the starting cell size can be set by the parameter CV2sz (In this case CV2sz=0) corresponding to the square coefficient of variation of the size. The resulting dataframe corresponds to three rows: The first is the time (taking samples every sample_time), the second is the mean size at that time and the third column corresponds to the Variance of the distribution of sizes at that time. 
 
-An example ob the obtained data is something like this:
+An example of the obtained data is something like this:
 
 
 |time	|Meansize|	VarSize|
