@@ -428,7 +428,7 @@ class PopSimulator:
                 self.file_size.write(line)
                 cnt +=self.smplt
                 if cnt >= tgt:
-                    print(str(np.int(100*self.time/tmax))+"%")
+                    print(str(np.int64(100*self.time/tmax))+"%")
                     cnt = 0
 
             self.file_size.close()

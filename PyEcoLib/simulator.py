@@ -340,7 +340,7 @@ class Simulator:
             self.file_size.write(line)
             cnt +=self.smplt
             if cnt >= tgt:
-                print(str(np.int(100*self.time/tmax))+"%")
+                print(str(np.int64(100*self.time/tmax))+"%")
                 cnt = 0
 
         self.file_size.close()
@@ -375,7 +375,7 @@ class Simulator:
             self.output += "\n"
             cnt += self.smplt
             if cnt >= tgt:
-                print(str(np.int(100*self.time/tmax))+"%")
+                print(str(np.int64(100*self.time/tmax))+"%")
                 tgt += (tmax/10)
             self.file.write(self.output)
         self.file.close()
