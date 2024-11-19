@@ -1,8 +1,8 @@
 import json
 import numpy as np
 
-from src.models.cell import Cell
-from src.utils.utils import Utils
+from ..models.cell import Cell
+from ..utils.utils import Utils
 
 class Simulator:
     def __init__(
